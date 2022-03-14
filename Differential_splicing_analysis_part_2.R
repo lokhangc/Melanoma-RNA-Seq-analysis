@@ -1,21 +1,4 @@
----
-  title: "Differential splicing analysis"
-author: "Rex"
-date: "09/12/2020"
-output:
-  word_document: default
-html_document: default
----
-  
-  ```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = 'C:/Users/Rex/Desktop/Master_cloudstor/rMATS/')
-```
-
-```{r message=FALSE,warning=FALSE,echo=FALSE}
-library(EBImage)
 library(openxlsx)
-library(knitr)
-```
 
 # 1. Differential splicing analysis
 
