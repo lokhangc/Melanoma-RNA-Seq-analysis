@@ -3,7 +3,7 @@ library('UpSetR')
 library('ComplexHeatmap')
 
 # Set working directory ---------------------------------------------------
-setwd("/Users/lokhangc/Desktop/Master Research/Data/rMATS/RL149_AL08_hg19_VaryRL_novelSS/")
+setwd("/Data/rMATS/RL149_AL08_hg19_VaryRL_novelSS/")
 
 # read rMATS results ------------------------------------------------------
 CDK4i_72hr_A3SS <- read.delim("CDK4i_72hr_DMSO_72hr/A3SS.MATS.JC.txt")
