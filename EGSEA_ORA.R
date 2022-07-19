@@ -10,7 +10,7 @@ msigdb <- unique(C5_BP[,7:8])
 head(msigdb)
 
 #CDK4i DGE
-CDK4i_DEGs <- read.xlsx("C:/Users/Rex/Desktop/Rex_Master_Research/Differential_gene_expression/edgeR/edgeR_sigchange_dge.xlsx",sheet=4)
+CDK4i_DEGs <- read.xlsx("/Differential_gene_expression/edgeR/edgeR_sigchange_dge.xlsx",sheet=4)
 
 unique_CDK4i_DEGs <- unique(CDK4i_DEGs[,1])
 unique_CDK4i_DEGs_df <- data.frame("Gene_symbol" = unique_CDK4i_DEGs,"test" = 1)
@@ -25,11 +25,11 @@ gsa.ora_CDK4i <- egsea.ora(unique_CDK4i_DEGs_ID$human_entrez_gene,gs.annots = gs
 EGSEA_CDK4i_ora <- topSets(gsa.ora_CDK4i, gs.label = 'c5', sort.by = "p.adj", number = Inf, names.only = FALSE)
 
 EGSEA_CDK4i_ora_adj <- EGSEA_CDK4i_ora[EGSEA_CDK4i_ora$p.adj<0.05,]
-write.csv(EGSEA_CDK4i_ora_adj,"C:/Users/Rex/Desktop/EGSEA_CDK4i_ora_adj_BP_DEG.csv")
+write.csv(EGSEA_CDK4i_ora_adj,"/EGSEA_CDK4i_ora_adj_BP_DEG.csv")
 
 
 #PRMT5i DGE
-PRMT5i_DEGs <- read.xlsx("C:/Users/Rex/Desktop/Rex_Master_Research/Differential_gene_expression/edgeR/edgeR_sigchange_dge.xlsx",sheet=2)
+PRMT5i_DEGs <- read.xlsx("/Differential_gene_expression/edgeR/edgeR_sigchange_dge.xlsx",sheet=2)
 
 unique_PRMT5i_DEGs <- unique(PRMT5i_DEGs[,1])
 unique_PRMT5i_DEGs_df <- data.frame("Gene_symbol" = unique_PRMT5i_DEGs,"test" = 1)
@@ -44,15 +44,15 @@ gsa.ora_PRMT5i <- egsea.ora(unique_PRMT5i_DEGs_ID$human_entrez_gene,gs.annots = 
 EGSEA_PRMT5i_ora <- topSets(gsa.ora_PRMT5i, gs.label = 'c5', sort.by = "p.adj", number = Inf, names.only = FALSE)
 
 EGSEA_PRMT5i_ora_adj <- EGSEA_PRMT5i_ora[EGSEA_PRMT5i_ora$p.adj<0.05,]
-write.csv(EGSEA_PRMT5i_ora_adj,"C:/Users/Rex/Desktop/EGSEA_PRMT5i_ora_adj_BP_DEG.csv")
+write.csv(EGSEA_PRMT5i_ora_adj,"/EGSEA_PRMT5i_ora_adj_BP_DEG.csv")
 
 
 #CDK4i DSG
-CDK4i_6d_A3SS <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/A3SS.MATS.JC.txt")
-CDK4i_6d_A5SS <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/A5SS.MATS.JC.txt")
-CDK4i_6d_MXE <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/MXE.MATS.JC.txt")
-CDK4i_6d_RI <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/RI.MATS.JC.txt")
-CDK4i_6d_SE <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/SE.MATS.JC.txt")
+CDK4i_6d_A3SS <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/A3SS.MATS.JC.txt")
+CDK4i_6d_A5SS <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/A5SS.MATS.JC.txt")
+CDK4i_6d_MXE <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/MXE.MATS.JC.txt")
+CDK4i_6d_RI <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/RI.MATS.JC.txt")
+CDK4i_6d_SE <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/CDK4i_6d_DMSO_72hr/SE.MATS.JC.txt")
 
 CDK4i_6d_A3SS <- CDK4i_6d_A3SS[CDK4i_6d_A3SS$FDR<0.05,]
 CDK4i_6d_A5SS <- CDK4i_6d_A5SS[CDK4i_6d_A5SS$FDR<0.05,]
@@ -78,15 +78,15 @@ gsa.ora <- egsea.ora(unique_CDK4i_6d_DSGs_ID$human_entrez_gene,gs.annots = gs.an
 EGSEA_CDK4i_ora <- topSets(gsa.ora, gs.label = 'c5', sort.by = "p.adj", number = Inf, names.only = FALSE)
 
 EGSEA_CDK4i_ora_adj <- EGSEA_CDK4i_ora[EGSEA_CDK4i_ora$p.adj<0.05,]
-write.csv(EGSEA_CDK4i_ora_adj,"C:/Users/Rex/Desktop/EGSEA_CDK4i_ora_adj_BP.csv")
+write.csv(EGSEA_CDK4i_ora_adj,"/EGSEA_CDK4i_ora_adj_BP.csv")
 
 
 #PRMT5i DSG
-PRMT5i_A3SS <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/A3SS.MATS.JC.txt")
-PRMT5i_A5SS <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/A5SS.MATS.JC.txt")
-PRMT5i_MXE <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/MXE.MATS.JC.txt")
-PRMT5i_RI <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/RI.MATS.JC.txt")
-PRMT5i_SE <- read.delim("C:/Users/Rex/Desktop/Rex_Master_Research/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/SE.MATS.JC.txt")
+PRMT5i_A3SS <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/A3SS.MATS.JC.txt")
+PRMT5i_A5SS <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/A5SS.MATS.JC.txt")
+PRMT5i_MXE <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/MXE.MATS.JC.txt")
+PRMT5i_RI <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/RI.MATS.JC.txt")
+PRMT5i_SE <- read.delim("/rMATS/RL149_AL08_hg19_VaryRL_novelSS/PRMT5i_72hr_DMSO_72hr/SE.MATS.JC.txt")
 
 PRMT5i_A3SS <- PRMT5i_A3SS[PRMT5i_A3SS$FDR<0.05,]
 PRMT5i_A5SS <- PRMT5i_A5SS[PRMT5i_A5SS$FDR<0.05,]
@@ -113,4 +113,4 @@ gsa.ora_PRMT5i <- egsea.ora(unique_PRMT5i_6d_DSGs_ID$human_entrez_gene,gs.annots
 EGSEA_PRMT5i_ora <- topSets(gsa.ora_PRMT5i, gs.label = 'c5', sort.by = "p.adj", number = Inf, names.only = FALSE)
 
 EGSEA_PRMT5i_ora_adj <- EGSEA_PRMT5i_ora[EGSEA_PRMT5i_ora$p.adj<0.05,]
-write.csv(EGSEA_PRMT5i_ora_adj,"C:/Users/Rex/Desktop/EGSEA_PRMT5i_ora_adj_BP.csv")
+write.csv(EGSEA_PRMT5i_ora_adj,"/EGSEA_PRMT5i_ora_adj_BP.csv")
