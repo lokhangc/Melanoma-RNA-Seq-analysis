@@ -1,6 +1,6 @@
-# 2. Differential gene expression analysis
+# Differential gene expression analysis
 
-## 2.1.Set Up
+## Set Up
 #The limma and edgeR packages are required for differential gene expression analysis.The pheatmap is used to create heatmap to visualize the differential gene expression results. The limma and edgeR uses different statistical model to determine differentially expressed genes. The following document shows steps required for edgeR and limma differential gene expression analysis.
 library(limma)
 library(edgeR)
@@ -16,7 +16,7 @@ count <-
            row.names = 1)
 
 
-## 2.2. Pre-processing
+## Pre-processing
 #reate a DGEList object from the read count matrix using the DGEList function.The group option is used to group replicates with same conditions.The DGEList object contains the read count matrix and the information of each samples, including the grouping conditions, the libary size and the normalisation factors.
 group <-
   factor(c(
@@ -59,7 +59,7 @@ cont.matrix <- makeContrasts(
 kable(cont.matrix)
 
 
-## 2.3. edgeR differential gene expression analysis
+## edgeR differential gene expression analysis
 ### Estimate dispersion
 #Estimate the dispersion between sample genes, which is required for fitting a generalised linear model. The estimateDisp() function estimates the common, trended and tagwise dispersion. Alternatively, it can be specified using the estimateGLMCommonDisp, estimateGLMTrendedDisp and estimateGLMTagwiseDisp.
 edgeR_dge_list <- estimateDisp(dge_list, design, robust = TRUE)
@@ -220,220 +220,3 @@ write.xlsx(edgeR_sigUpReg_dge,
            'edgeR/edgeR_sigUpReg_dge.xlsx',
            row.names = TRUE)
 
-
-## 2.4. limma differential gene expression analysis
-### voom transformation
-#Transform to log (count per million).
-v = voom(dge_list, design = design)
-
-
-### Fitting model
-#lmFit fits linear model for each gene using weighted least squares for each gene
-limma_fit = lmFit(v, design)
-head(coef(limma_fit))
-
-
-#Estimate contrast for each gene and each comparison
-tmp <- contrasts.fit(limma_fit, cont.matrix)
-
-
-#Empirical Bayes smoothed the standard errors
-tmp <- eBayes(tmp)
-
-
-### Extract results
-#Extract significantly differentially expressed genes
-limma_deg <-
-  topTable(tmp,
-           number = Inf,
-           sort.by = 'none',
-           p.value = 0.05)
-
-
-#The number of differentially expressed genes is summarized, including the number of non significant, significantly up regulated and significantly down regulated differentially expressed genes.
-limma_summary <- decideTests(tmp)
-kable(summary(limma_summary))
-
-
-#The entire list of differentially expressed genes can be extracted using the topTags() function. FDR is not calculated, significantly changed genes are selected with p value < 0.05.
-limma_res_CDK4i_72hr_DMSO_72hr <-
-  topTable(
-    tmp,
-    coef = 1,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-limma_res_PRMT5i_72hr_DMSO_72hr <-
-  topTable(
-    tmp,
-    coef = 2,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-limma_res_CDK4i_72hr_PRMT5i_72hr <-
-  topTable(
-    tmp,
-    coef = 3,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-limma_res_CDK4i_6d_DMSO_72hr <-
-  topTable(
-    tmp,
-    coef = 4,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-limma_res_CDK4i_6d_CDK4i_72hr <-
-  topTable(
-    tmp,
-    coef = 5,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-limma_res_CDK4i_6d_PRMT5i_72hr <-
-  topTable(
-    tmp,
-    coef = 6,
-    number = Inf,
-    sort.by = 'none',
-    p.value = 0.05
-  )
-
-
-#The significantly differentially expressed genes are further splitted by the regulation directions, which is determined by the fold change direction.
-limma_sigDownReg_CDK4i_72hr_DMSO_72hr <-
-  limma_res_CDK4i_72hr_DMSO_72hr[limma_res_CDK4i_72hr_DMSO_72hr$logFC < 0,]
-limma_sigUpReg_CDK4i_72hr_DMSO_72hr <-
-  limma_res_CDK4i_72hr_DMSO_72hr[limma_res_CDK4i_72hr_DMSO_72hr$logFC > 0,]
-
-limma_sigDownReg_PRMT5i_72hr_DMSO_72hr <-
-  limma_res_PRMT5i_72hr_DMSO_72hr[limma_res_PRMT5i_72hr_DMSO_72hr$logFC < 0,]
-limma_sigUpReg_PRMT5i_72hr_DMSO_72hr <-
-  limma_res_PRMT5i_72hr_DMSO_72hr[limma_res_PRMT5i_72hr_DMSO_72hr$logFC > 0,]
-
-limma_sigDownReg_CDK4i_72hr_PRMT5i_72hr <-
-  limma_res_CDK4i_72hr_PRMT5i_72hr[limma_res_CDK4i_72hr_PRMT5i_72hr$logFC < 0,]
-limma_sigUpReg_CDK4i_72hr_PRMT5i_72hr <-
-  limma_res_CDK4i_72hr_PRMT5i_72hr[limma_res_CDK4i_72hr_PRMT5i_72hr$logFC > 0,]
-
-limma_sigDownReg_CDK4i_6d_DMSO_72hr <-
-  limma_res_CDK4i_6d_DMSO_72hr[limma_res_CDK4i_6d_DMSO_72hr$logFC < 0,]
-limma_sigUpReg_CDK4i_6d_DMSO_72hr <-
-  limma_res_CDK4i_6d_DMSO_72hr[limma_res_CDK4i_6d_DMSO_72hr$logFC > 0,]
-
-limma_sigDownReg_CDK4i_6d_CDK4i_72hr <-
-  limma_res_CDK4i_6d_CDK4i_72hr[limma_res_CDK4i_6d_CDK4i_72hr$logFC < 0,]
-limma_sigUpReg_CDK4i_6d_CDK4i_72hr <-
-  limma_res_CDK4i_6d_CDK4i_72hr[limma_res_CDK4i_6d_CDK4i_72hr$logFC > 0,]
-
-limma_sigDownReg_CDK4i_6d_PRMT5i_72hr <-
-  limma_res_CDK4i_6d_PRMT5i_72hr[limma_res_CDK4i_6d_PRMT5i_72hr$logFC < 0,]
-limma_sigUpReg_CDK4i_6d_PRMT5i_72hr <-
-  limma_res_CDK4i_6d_PRMT5i_72hr[limma_res_CDK4i_6d_PRMT5i_72hr$logFC > 0,]
-
-
-#Three excel files containing list of significantly differentially expressed genes under different contrast are generated.The limma_sigchange_dge.xlsx contains all significantly differentially expressed genes, the limma_sigDownReg_dge.xlsx contains down regulated significantly differentially expressed genes and the limma_sigUpReg_dge.xlsx contains up regulated significantly differentially expressed genes.The file contains log fold change, average expression across samples, t statistics, p - values and the B - statistics.
-limma_sigchange_dge <-
-  list(
-    'CDK4i_72hr_DMSO_72hr' = limma_res_CDK4i_72hr_DMSO_72hr,
-    'PRMT5i_72hr_DMSO_72hr' = limma_res_PRMT5i_72hr_DMSO_72hr,
-    'CDK4i_72hr_PRMT5i_72hr' = limma_res_CDK4i_72hr_PRMT5i_72hr,
-    'CDK4i_6d_DMSO_72hr' = limma_res_CDK4i_6d_DMSO_72hr,
-    'CDK4i_6d_CDK4i_72hr' = limma_res_CDK4i_6d_CDK4i_72hr,
-    'CDK4i_6d_PRMT5i_72hr' = limma_res_CDK4i_6d_PRMT5i_72hr
-  )
-
-limma_sigDownReg_dge <-
-  list(
-    'CDK4i_72hr_DMSO_72hr' = limma_sigDownReg_CDK4i_72hr_DMSO_72hr,
-    'PRMT5i_72hr_DMSO_72hr' = limma_sigDownReg_PRMT5i_72hr_DMSO_72hr,
-    'CDK4i_72hr_PRMT5i_72hr' = limma_sigDownReg_CDK4i_72hr_PRMT5i_72hr,
-    'CDK4i_6d_DMSO_72hr' = limma_sigDownReg_CDK4i_6d_DMSO_72hr,
-    'CDK4i_6d_CDK4i_72hr' = limma_sigDownReg_CDK4i_6d_CDK4i_72hr,
-    'CDK4i_6d_PRMT5i_72hr' = limma_sigDownReg_CDK4i_6d_PRMT5i_72hr
-  )
-
-limma_sigUpReg_dge <-
-  list(
-    'CDK4i_72hr_DMSO_72hr' = limma_sigUpReg_CDK4i_72hr_DMSO_72hr,
-    'PRMT5i_72hr_DMSO_72hr' = limma_sigUpReg_PRMT5i_72hr_DMSO_72hr,
-    'CDK4i_72hr_PRMT5i_72hr' = limma_sigUpReg_CDK4i_72hr_PRMT5i_72hr,
-    'CDK4i_6d_DMSO_72hr' = limma_sigUpReg_CDK4i_6d_DMSO_72hr,
-    'CDK4i_6d_CDK4i_72hr' = limma_sigUpReg_CDK4i_6d_CDK4i_72hr,
-    'CDK4i_6d_PRMT5i_72hr' = limma_sigUpReg_CDK4i_6d_PRMT5i_72hr
-  )
-
-write.xlsx(limma_sigchange_dge,
-           'limma/limma_sigchange_dge.xlsx',
-           row.names = TRUE)
-write.xlsx(limma_sigDownReg_dge,
-           'limma/limma_sigDownReg_dge.xlsx',
-           row.names = TRUE)
-write.xlsx(limma_sigUpReg_dge,
-           'limma/limma_sigUpReg_dge.xlsx',
-           row.names = TRUE)
-
-
-## 2.5. Result visualisation
-#A heatmap showing all differentially expressed genes  and their fold change detected by edgeR.
-pheatmap(
-  edgeR_deg_result[, c(1, 2, 4)],
-  cellwidth = 50,
-  cluster_rows = 0,
-  annotation_names_row = 1,
-  labels_col = c(
-    'CDK4i_72hr_DMSO_72hr',
-    'PRMT5i_72hr_DMSO_72hr',
-    'CDK4i_6d_DMSO_72hr'
-  ),
-  main = 'edgeR DEGs logFC'
-)
-
-
-#A heatmap showing all differentially expressed genes  and their fold change detected by limma.
-pheatmap(
-  limma_deg[, c(1, 2, 4)],
-  cellwidth = 50,
-  cluster_rows = 0,
-  annotation_names_row = 1,
-  main = 'limma DEGs logFC'
-)
-
-
-## 2.6. limma result comparison
-#The number of differentially expressed genes detected by edgeR and limma are very similar. Gene set enrichment analysis is  performed next using the limma based tool, EGSEA. Thus, the differential gene expression result from limma is selected and compared.Venn diagrams are presented to compare the differentially expressed genes under different inhibitions.
-colnames(limma_summary)[c(1, 2, 4)] <-
-  c('CDK4i_72hr', 'PRMT5i_72hr', 'CDK4i_6d')
-
-par(mfrow = c(2, 2))
-vennDiagram(
-  limma_summary[, 1:2],
-  include = c('up', 'down'),
-  cex = 0.8,
-  main = 'CDK4i_72hr vs PRMT5i_72hr'
-)
-
-vennDiagram(
-  limma_summary[, c(1, 4)],
-  include = c('up', 'down'),
-  cex = 0.8,
-  main = 'CDK4i_72hr vs CDK4i_6d'
-)
-
-vennDiagram(
-  limma_summary[, c(4, 2)],
-  include = c('up', 'down'),
-  cex = 0.8,
-  main = 'CDK4i_6d vs PRMT5i_72hr'
-)
